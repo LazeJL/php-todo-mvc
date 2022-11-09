@@ -1,3 +1,8 @@
+<?php 
+  /**
+  * @var TaskEntity[] $tasks
+  */
+?>
 <?php
 echo get_header( [ 'title' => 'Accueil' ] );
 ?>
@@ -26,43 +31,73 @@ echo get_header( [ 'title' => 'Accueil' ] );
       <form method="post">
         
         <!-- Task -->
-        <div class="bg-white hover:bg-slate-50 transition-colors duration-300 my-2 py-4 rounded flex flex-row border-2 border-slate-100 items-stretch">
-          <!-- Checkbox -->
-          <div class="mx-4 flex items-center">
-            <input
-              id="task-1"
-              name="task-1"
-              type="checkbox"
-              class="w-4 h-4 text-slate-600 bg-slate-100 rounded-xl border-2 border-slate-300 cursor-pointer accent-teal-400"
-            />
-          </div>
-          
-          <!-- Content -->
-          <label for="task-1" class="mx-4 -my-4 py-4 flex-1 text-lg font-medium cursor-pointer select-none flex items-center">
-            Un nom de tâche original
-          </label>
-          
-          
-          <!-- Actions -->
-          <ul class="mx-4 text-lg font-bolder flex items-center flex">
-            <!-- Show only if the task has a description -->
-            <li class="px-2 border-r-2 border-slate-100">
-              <span class="sr-only">Cette tâche a une description</span>
-              <i class="iconoir-align-left text-slate-400"></i>
-            </li>
-            
-            <!-- Edit button -->
-            <li class="px-2">
-              <a href="/task/1">
-                <button type="button" class="bg-transparent transition-colors duration-300 hover:bg-slate-200 rounded p-2 cursor-pointer">
-                  <span class="sr-only">Éditer la tâche</span>
-                  <i class="iconoir-edit-pencil"></i>
-                </button>
-              </a>
-            </li>
-          </ul>
+        <?php 
         
-        </div>
+        $per_page = 10;
+        $nbr_task = 0;
+
+        if($_GET["page"] == 1){
+          foreach($tasks as $task){
+            if($nbr_task != $per_page){
+              if (!isset($date) || $date !== date('d/m/Y',strtotime($task->getCreatedAt()))) {
+                $date = date('d/m/Y',strtotime($task->getCreatedAt()));
+                echo '<strong>'.  $date .'</strong>';
+              }
+              echo get_template( __PROJECT_ROOT__ . "/Views/fragments/task-card.php", [
+                'task' => $task
+              ]); 
+              $nbr_task = $nbr_task + 1;
+            }
+          }
+        }
+        if($_GET["page"] == 2){
+          $compteur = 0;
+          foreach($tasks as $task){
+            if($nbr_task != $per_page && $compteur == 10){
+              if (!isset($date) || $date !== date('d/m/Y',strtotime($task->getCreatedAt()))) {
+                $date = date('d/m/Y',strtotime($task->getCreatedAt()));
+                echo '<strong>'.  $date .'</strong>';
+              }
+              echo get_template( __PROJECT_ROOT__ . "/Views/fragments/task-card.php", [
+                'task' => $task
+              ]); 
+              $nbr_task = $nbr_task + 1;
+            }
+            else{
+              $compteur = $compteur + 1;
+            }
+          }
+        }
+        if($_GET["page"] == 3){
+          $compteur = 0;
+          foreach($tasks as $task){
+            if($nbr_task != $per_page && $compteur == 20){
+              if (!isset($date) || $date !== date('d/m/Y',strtotime($task->getCreatedAt()))) {
+                $date = date('d/m/Y',strtotime($task->getCreatedAt()));
+                echo '<strong>'.  $date .'</strong>';
+              }
+              echo get_template( __PROJECT_ROOT__ . "/Views/fragments/task-card.php", [
+                'task' => $task
+              ]); 
+              $nbr_task = $nbr_task + 1;
+            }
+            else{
+              $compteur = $compteur + 1;
+            }
+          }
+        }?>
+
+        <?php  
+          if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
+            $url = "https://";   
+          else  
+            $url = "http://";   
+          // Append the host(domain name, ip) to the URL.   
+          $url.= $_SERVER['HTTP_HOST'];   
+    
+          // Append the requested resource location to the URL   
+          $url.= $_SERVER['REQUEST_URI'];    
+        ?>
         
         <!-- Pagination + Submit -->
         <div class="flex flex-row justify-space-between items-center">
@@ -73,13 +108,28 @@ echo get_header( [ 'title' => 'Accueil' ] );
           
           <!-- Pagination -->
           <div class="flex-1 flex flex-row justify-end space-x-4 my-8">
-            <a class="block bg-slate-50 hover:bg-slate-200 rounded p-4 text-sm cursor-pointer transition-colors duration-300">
+            <a href="<?php 
+              $donne = $_GET;
+              $donne["page"] = 1;
+              $query = http_build_query($donne);
+              echo "?".$query;
+              ?>" class="block bg-slate-50 hover:bg-slate-200 rounded p-4 text-sm cursor-pointer transition-colors duration-300">
               1
             </a>
-            <a class="block bg-slate-50 hover:bg-slate-200 rounded p-4 text-sm cursor-pointer transition-colors duration-300">
+            <a href="<?php 
+              $donne = $_GET;
+              $donne["page"] = 2;
+              $query = http_build_query($donne);
+              echo "?".$query;
+              ?>" class="block bg-slate-50 hover:bg-slate-200 rounded p-4 text-sm cursor-pointer transition-colors duration-300">
               2
             </a>
-            <a class="block bg-slate-50 hover:bg-slate-200 rounded p-4 text-sm cursor-pointer transition-colors duration-300">
+            <a href="<?php 
+              $donne = $_GET;
+              $donne["page"] = 3;
+              $query = http_build_query($donne);
+              echo "?".$query;
+              ?>" class="block bg-slate-50 hover:bg-slate-200 rounded p-4 text-sm cursor-pointer transition-colors duration-300">
               3
             </a>
           </div>

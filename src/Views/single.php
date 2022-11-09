@@ -5,7 +5,9 @@
  * @var TaskEntity|null $task
  * @var bool            $editing
  */
-echo get_header( [ 'title' => $task->getTitle() ] );
+if($task != null){
+  echo get_header( [ 'title' => $task->getTitle() ] );
+}
 ?>
 <main class="container mx-auto">
   <header class="flex flex-row mt-8 items-center mb-8">

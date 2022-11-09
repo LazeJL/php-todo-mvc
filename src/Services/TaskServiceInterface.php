@@ -41,7 +41,7 @@ interface TaskServiceInterface {
   /**
    * Persist a new TaskEntity to the storage
    *
-   * @param TaskEntity $task
+   *  
    *
    * @return TaskEntity
    */
