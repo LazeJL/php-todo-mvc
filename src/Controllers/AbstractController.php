@@ -1,4 +1,7 @@
 <?php
+namespace Todo\Controllers;
+use Todo\Services\TaskServiceInterface;
+use Tode\Entities\TaskEntity;
 
 abstract class AbstractController {
   

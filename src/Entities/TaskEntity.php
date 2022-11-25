@@ -1,4 +1,5 @@
 <?php
+namespace Todo\Entities;
 
 class TaskEntity{
 
@@ -61,6 +62,15 @@ class TaskEntity{
 
     function setUpdatedAt(String $updatedAt) : TaskEntity {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    function getCompletedAt() : String {
+        return $this->CompletedAt;
+    }
+
+    function setCompletedAt(String $CompletedAt) : TaskEntity {
+        $this->CompletedAt = $CompletedAt;
         return $this;
     }
 } 

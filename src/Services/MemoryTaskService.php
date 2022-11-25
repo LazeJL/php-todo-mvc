@@ -1,4 +1,8 @@
 <?php
+namespace Todo\Services;
+use Todo\Common\SingletonTrait;
+use Todo\Entities\TaskEntity;
+use Todo\Services\TaskServiceInterface;
 
 class MemoryTaskService implements TaskServiceInterface {
   

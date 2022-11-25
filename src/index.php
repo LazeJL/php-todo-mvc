@@ -1,4 +1,8 @@
 <?php
+namespace Todo;
+use Todo\Controllers\TaskListController;
+use Todo\Controllers\TaskSingleController;
+use Todo\Services\MemoryTaskService;
 
 const __PROJECT_ROOT__ = __DIR__;
 
@@ -9,6 +13,7 @@ require_once __PROJECT_ROOT__ . "/Entities/TaskEntity.php";
 
 require_once __PROJECT_ROOT__ . "/Services/TaskServiceInterface.php";
 require_once __PROJECT_ROOT__ . "/Services/MemoryTaskService.php";
+require_once __PROJECT_ROOT__ . "/Services/DatabaseTaskService.php";
 
 require_once __PROJECT_ROOT__ . "/Controllers/AbstractController.php";
 require_once __PROJECT_ROOT__ . "/Controllers/TaskSingleController.php";
@@ -16,7 +21,6 @@ require_once __PROJECT_ROOT__ . "/Controllers/TaskListController.php";
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode( '/', $uri );
-
 
 switch ($uri[1]) :
   // List/Home view

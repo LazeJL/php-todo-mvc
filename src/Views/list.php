@@ -31,61 +31,35 @@ echo get_header( [ 'title' => 'Accueil' ] );
       <form method="post">
         
         <!-- Task -->
-        <?php 
-        
-        $per_page = 10;
-        $nbr_task = 0;
+        <?php
+          $atmdate = "";
+          $page = $_GET['page'] ?? 1;
+          switch ($page){
+            case 1:
+                $page = 0;
+                break;
+            case 2:
+                $page = 10;
+                break;
+            case 3:
+                $page = 20;
+                break;
+          }
 
-        if($_GET["page"] == 1){
-          foreach($tasks as $task){
-            if($nbr_task != $per_page){
-              if (!isset($date) || $date !== date('d/m/Y',strtotime($task->getCreatedAt()))) {
-                $date = date('d/m/Y',strtotime($task->getCreatedAt()));
-                echo '<strong>'.  $date .'</strong>';
+          $tasks = array_slice($tasks, $page, 10);
+
+          foreach ($tasks as $task){
+              $taskDate = date('d-m-Y', strtotime($task->getCreatedAt())); 
+              if ($taskDate != $atmdate) {
+                  $atmdate = $taskDate;
+                  echo "<h2 class='text-xl font-bold uppercase tracking-widest flex-1 mt-8 mb-4'>$taskDate</h2>";
               }
+
               echo get_template( __PROJECT_ROOT__ . "/Views/fragments/task-card.php", [
-                'task' => $task
-              ]); 
-              $nbr_task = $nbr_task + 1;
-            }
+                  'task' => $task
+              ]);
           }
-        }
-        if($_GET["page"] == 2){
-          $compteur = 0;
-          foreach($tasks as $task){
-            if($nbr_task != $per_page && $compteur == 10){
-              if (!isset($date) || $date !== date('d/m/Y',strtotime($task->getCreatedAt()))) {
-                $date = date('d/m/Y',strtotime($task->getCreatedAt()));
-                echo '<strong>'.  $date .'</strong>';
-              }
-              echo get_template( __PROJECT_ROOT__ . "/Views/fragments/task-card.php", [
-                'task' => $task
-              ]); 
-              $nbr_task = $nbr_task + 1;
-            }
-            else{
-              $compteur = $compteur + 1;
-            }
-          }
-        }
-        if($_GET["page"] == 3){
-          $compteur = 0;
-          foreach($tasks as $task){
-            if($nbr_task != $per_page && $compteur == 20){
-              if (!isset($date) || $date !== date('d/m/Y',strtotime($task->getCreatedAt()))) {
-                $date = date('d/m/Y',strtotime($task->getCreatedAt()));
-                echo '<strong>'.  $date .'</strong>';
-              }
-              echo get_template( __PROJECT_ROOT__ . "/Views/fragments/task-card.php", [
-                'task' => $task
-              ]); 
-              $nbr_task = $nbr_task + 1;
-            }
-            else{
-              $compteur = $compteur + 1;
-            }
-          }
-        }?>
+          ?>
 
         <?php  
           if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
